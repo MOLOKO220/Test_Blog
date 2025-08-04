@@ -1,9 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Box, TextField, Button, Typography, List } from "@mui/material";
 import { addComment, fetchComments } from "@/app/lib/commentsApi";
 import CommentItem from "../CommentsItem/CommentsItem";
+
+// UI components
+import FlexBox from "../UI/FlexBox";
+import Title from "../UI/Title";
+import FormField from "../UI/FormField";
+import Button from "../UI/Button";
 
 export default function CommentsWrapper({ postId }: { postId: string }) {
   const [text, setText] = useState("");
@@ -14,13 +19,11 @@ export default function CommentsWrapper({ postId }: { postId: string }) {
     loadComments();
   }, [postId]);
 
-  // gat all comments for the post
   const loadComments = async () => {
     const data = await fetchComments(postId);
     setComments(data);
   };
 
-  // add a new comment
   const handleAddComment = async () => {
     if (!text.trim()) {
       setError("Comment cannot be empty");
@@ -34,27 +37,29 @@ export default function CommentsWrapper({ postId }: { postId: string }) {
   };
 
   return (
-    <Box mt={4}>
-      <Typography variant="h6">Comments</Typography>
+    <FlexBox direction="column" gap="12px">
+      <Title as="h6" fontSize="20px">
+        Comments
+      </Title>
 
-      <Box display="flex" gap={2} pb={2} mt={2}>
-        <TextField
+      <FlexBox align="flex-start" gap="8px">
+        <FormField
+          margin="0"
+          label="Write a comment"
           value={text}
           onChange={(e) => {
             setText(e.target.value);
             if (error) setError("");
           }}
-          label="Write a comment"
-          fullWidth
-          error={!!error}
-          helperText={error}
+          error={error ? { message: error, type: "manual" } : undefined}
         />
-        <Button variant="contained" onClick={handleAddComment}>
+
+        <Button onClick={handleAddComment} $height="53px">
           Send
         </Button>
-      </Box>
+      </FlexBox>
 
-      <List>
+      <FlexBox direction="column" gap="8px">
         {comments.map((comment) => (
           <CommentItem
             key={comment.id}
@@ -65,7 +70,7 @@ export default function CommentsWrapper({ postId }: { postId: string }) {
             onDeleted={loadComments}
           />
         ))}
-      </List>
-    </Box>
+      </FlexBox>
+    </FlexBox>
   );
 }

@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Box,
-  Typography,
-  IconButton,
-  ListItem,
-  CircularProgress,
-} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CircularProgress from "@mui/material/CircularProgress";
+import IconButton from "@mui/material/IconButton";
 import { deleteComment } from "@/app/lib/commentsApi";
+
+// UI components
+import FlexBox from "../UI/FlexBox";
+import StyledContainer from "../UI/StyledContainer";
+import TextSecondary from "../UI/TextSecondary";
 
 type CommentItemProps = {
   id: string;
@@ -41,32 +41,21 @@ export default function CommentItem({
   };
 
   return (
-    <ListItem
-      sx={{
-        border: "1px solid #9b9b9b",
-        borderRadius: 2,
-        mb: 2,
-        px: 2,
-        py: 1,
-        alignItems: "flex-start",
+    <StyledContainer
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        margin: "2px",
+        padding: "8px 16px",
       }}
-      secondaryAction={
-        <IconButton
-          edge="end"
-          aria-label="delete"
-          onClick={handleDelete}
-          disabled={isDeleting}
-        >
-          {isDeleting ? <CircularProgress size={20} /> : <DeleteIcon />}
-        </IconButton>
-      }
     >
-      <Box>
-        <Typography variant="body1" sx={{ mb: 0.5 }}>
+      <FlexBox direction="column" gap="4px" style={{ marginBottom: "0" }}>
+        <TextSecondary color="black" style={{ marginBottom: "0" }}>
           {text}
-        </Typography>
+        </TextSecondary>
         {createdAt && (
-          <Typography variant="caption" color="text.secondary">
+          <TextSecondary fontStyle="italic" style={{ fontSize: "0.8rem" }}>
             {new Date(createdAt.seconds * 1000).toLocaleString("uk-UA", {
               day: "2-digit",
               month: "2-digit",
@@ -75,9 +64,18 @@ export default function CommentItem({
               minute: "2-digit",
               hour12: false,
             })}
-          </Typography>
+          </TextSecondary>
         )}
-      </Box>
-    </ListItem>
+      </FlexBox>
+
+      <IconButton
+        edge="end"
+        aria-label="delete"
+        onClick={handleDelete}
+        disabled={isDeleting}
+      >
+        {isDeleting ? <CircularProgress size={20} /> : <DeleteIcon />}
+      </IconButton>
+    </StyledContainer>
   );
 }

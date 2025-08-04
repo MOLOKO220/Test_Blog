@@ -2,12 +2,22 @@
 
 import { useState, useEffect } from "react";
 import { getPostById, updatePost, deletePost } from "@/app/lib/postApi";
-import { Box, Typography, TextField, Button } from "@mui/material";
-import SectionHeader from "@/app/components/SectionHeader/SectionHeader";
 import { useParams, useRouter } from "next/navigation";
+
 import { Post } from "@/app/types/post";
 import { usePostFormValidation } from "@/app/hooks/usePostFormValidation/usePostFormValidation";
+
+import SectionHeader from "@/app/components/SectionHeader/SectionHeader";
 import CommentsWrapper from "@/app/components/CommentsWrapper/CommentsWrapper";
+
+// UI components
+import FlexBox from "@/app/components/UI/FlexBox";
+import TextSecondary from "@/app/components/UI/TextSecondary";
+import StyledContainer from "@/app/components/UI/StyledContainer";
+import Title from "@/app/components/UI/Title";
+import FormField from "@/app/components/UI/FormField";
+import Button1 from "@/app/components/UI/Button";
+import TextMeta from "@/app/components/UI/TextMeta";
 
 export default function PostPage() {
   const { id } = useParams();
@@ -75,102 +85,90 @@ export default function PostPage() {
 
   if (!post) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexDirection="column"
+      <FlexBox
+        justify="center"
+        align="center"
+        direction="column"
         height="100vh"
       >
-        <Typography variant="h4" gutterBottom>
-          Post not found
-        </Typography>
-        <Typography>The post you are looking for does not exist.</Typography>
-      </Box>
+        <TextSecondary color="black">
+          Post not found <br />
+          The post you are looking for does not exist.
+        </TextSecondary>
+      </FlexBox>
     );
   }
 
   return (
-    <Box
-      component="section"
-      maxWidth="md"
-      sx={{ m: "0 auto", mt: 4, px: 2, py: 4 }}
-    >
-      <SectionHeader
-        title={<Typography variant="h3">{post.title}</Typography>}
-      />
-
+    <StyledContainer as="section">
+      <SectionHeader title={<Title>{post.title}</Title>} />
       {isEditing ? (
         <>
-          <TextField
+          <FormField
             label="Title"
             {...register("title")}
-            error={!!errors.title}
-            helperText={errors.title?.message}
-            fullWidth
-            sx={{ mb: 2 }}
+            error={errors.title}
           />
-
-          <TextField
+          <FormField
             label="Description"
             {...register("description")}
-            error={!!errors.description}
-            helperText={errors.description?.message}
-            fullWidth
-            sx={{ mb: 2 }}
+            error={errors.description}
           />
-
-          <TextField
+          <FormField
             label="Content"
             {...register("content")}
-            error={!!errors.content}
-            helperText={errors.content?.message}
-            fullWidth
             multiline
-            rows={6}
+            rows={10}
+            error={errors.content}
           />
 
-          <Box display="flex" justifyContent="flex-end" gap={1} mt={2}>
-            <Button onClick={handleCancel}>Cancel</Button>
-            <Button variant="contained" onClick={handleSubmit(onSubmit)}>
-              Save
-            </Button>
-          </Box>
+          <FlexBox justify="flex-end" margin="16px 0 0 0">
+            <Button1 onClick={handleCancel} $bg="#c7c7c7ff" $color="#1976d2">
+              Cancel
+            </Button1>
+            <Button1 onClick={handleSubmit(onSubmit)}>Save</Button1>
+          </FlexBox>
         </>
       ) : (
         <>
-          <Box display="flex" justifyContent="flex-end" gap={1}>
-            <Button onClick={() => setIsEditing(true)}>Edit</Button>
-            <Button color="error" onClick={handleDelete}>
+          <FlexBox justify="flex-end" gap="8px">
+            <Button1
+              onClick={() => setIsEditing(true)}
+              $bg="#adb1b4ff"
+              $color="#1976d2"
+            >
+              Edit
+            </Button1>
+            <Button1
+              $color="#d62c2cff"
+              $border="1px solid #d62c2cff"
+              $bg="#c7c7c7ff"
+              onClick={handleDelete}
+            >
               Delete
-            </Button>
-          </Box>
+            </Button1>
+          </FlexBox>
 
-          <Typography
-            variant="subtitle1"
-            sx={{ mt: 2, mb: 1, fontStyle: "italic", color: "gray" }}
-          >
+          <TextSecondary color="#666666ff" fontStyle="italic">
             {post.description}
-          </Typography>
-
-          <Typography variant="body1">{post.content}</Typography>
+          </TextSecondary>
+          <TextSecondary color="#3c3c3cff">{post.content}</TextSecondary>
         </>
       )}
 
-      <Typography
-        variant="body2"
-        sx={{ mt: 4, textAlign: "right", color: "#666" }}
-      >
-        {new Date(post.createdAt).toLocaleString("uk-UA", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        })}
-      </Typography>
+      <FlexBox justify="flex-end" margin="16px 0 0 0">
+        <TextMeta>
+          {new Date(post.createdAt).toLocaleString("uk-UA", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          })}
+        </TextMeta>
+      </FlexBox>
       {!isEditing && <CommentsWrapper postId={post.id} />}
-    </Box>
+    </StyledContainer>
   );
 }

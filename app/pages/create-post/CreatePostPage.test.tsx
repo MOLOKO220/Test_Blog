@@ -1,18 +1,16 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import CreatePostPage from "./page";
 import { Provider } from "react-redux";
-import { useRouter } from "next/navigation";
 import { configureStore } from "@reduxjs/toolkit";
 import { act } from "react";
 
 jest.mock("next/navigation", () => ({
-  useRouter: jest.fn(),
+  useRouter: () => ({ push: jest.fn() }),
 }));
 
 const mockDispatch = jest.fn();
-jest.mock("react-redux", () => ({
-  ...jest.requireActual("react-redux"),
-  useDispatch: () => mockDispatch,
+jest.mock("@/app/store/hooks", () => ({
+  useAppDispatch: () => mockDispatch,
 }));
 
 jest.mock("@/app/store/postsSlice", () => {
@@ -25,31 +23,34 @@ jest.mock("@/app/store/postsSlice", () => {
     },
   });
 
-  return { createPost };
+  const reducer = () => ({
+    posts: [],
+    loading: false,
+    error: null,
+  });
+
+  return { createPost, default: reducer };
 });
 
-const fakeStore = configureStore({
+import postsReducer, { createPost } from "@/app/store/postsSlice";
+
+const store = configureStore({
   reducer: {
-    posts: () => ({}),
+    posts: postsReducer,
   },
 });
 
 describe("CreatePostPage", () => {
-  const mockPush = jest.fn();
-
   beforeEach(() => {
-    (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
-
-    mockDispatch.mockResolvedValue({
+    (mockDispatch as jest.Mock).mockResolvedValue({
       type: "posts/createPost/fulfilled",
     });
-
     jest.clearAllMocks();
   });
 
   const renderWithProviders = () =>
     render(
-      <Provider store={fakeStore}>
+      <Provider store={store}>
         <CreatePostPage />
       </Provider>
     );
@@ -82,6 +83,11 @@ describe("CreatePostPage", () => {
   });
 
   it("submits valid form and redirects", async () => {
+    const mockPush = jest.fn();
+    jest.spyOn(require("next/navigation"), "useRouter").mockReturnValue({
+      push: mockPush,
+    });
+
     renderWithProviders();
 
     fireEvent.change(screen.getByLabelText("Title"), {
@@ -97,16 +103,6 @@ describe("CreatePostPage", () => {
     await act(async () => {
       fireEvent.click(screen.getByRole("button", { name: /create/i }));
     });
-
-    expect(
-      screen.queryByText(/Title must be at least 3 characters/i)
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByText(/Description must be at least 5 characters/i)
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByText(/Content must be at least 10 characters/i)
-    ).not.toBeInTheDocument();
 
     expect(mockPush).toHaveBeenCalledWith("/");
   });

@@ -1,18 +1,24 @@
 "use client";
 
-import { Container, TextField, Box, Button } from "@mui/material";
-import { useDispatch } from "react-redux";
 import { createPost } from "@/app/store/postsSlice";
-import { AppDispatch } from "@/app/store/store";
 import { useRouter } from "next/navigation";
+// Redux
+import { useAppDispatch } from "@/app/store/hooks";
 
 import { usePostFormValidation } from "@/app/hooks/usePostFormValidation/usePostFormValidation";
 
 import SectionHeader from "@/app/components/SectionHeader/SectionHeader";
 
+// UI components
+import Button from "@/app/components/UI/Button";
+import FormField from "@/app/components/UI/FormField";
+import Form from "@/app/components/UI/Form";
+import StyledContainer from "@/app/components/UI/StyledContainer";
+import FlexBox from "@/app/components/UI/FlexBox";
+
 export default function CreatePostPage() {
   // Redux
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
   // validation
@@ -31,59 +37,26 @@ export default function CreatePostPage() {
   };
 
   return (
-    <Container
-      maxWidth="md"
-      sx={{
-        border: "1px solid #888686",
-        borderRadius: 2,
-        my: 4,
-        p: 2,
-      }}
-    >
-      <SectionHeader title="Create Post" />
-
-      <Box
-        component="form"
-        noValidate
-        autoComplete="off"
-        display="flex"
-        flexDirection="column"
-        gap={3}
-        mt={3}
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <TextField
-          label="Title"
-          fullWidth
-          {...register("title")}
-          error={!!errors.title}
-          helperText={errors.title?.message}
-        />
-
-        <TextField
+    <StyledContainer>
+      <Form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+        <SectionHeader title="Create Post" />
+        <FormField label="Title" {...register("title")} error={errors.title} />
+        <FormField
           label="Description"
-          fullWidth
           {...register("description")}
-          error={!!errors.description}
-          helperText={errors.description?.message}
+          error={errors.description}
         />
-
-        <TextField
+        <FormField
           label="Content"
-          fullWidth
+          {...register("content")}
           multiline
           rows={6}
-          {...register("content")}
-          error={!!errors.content}
-          helperText={errors.content?.message}
+          error={errors.content}
         />
-
-        <Box display="flex" justifyContent="flex-end">
-          <Button variant="contained" type="submit">
-            Create
-          </Button>
-        </Box>
-      </Box>
-    </Container>
+        <FlexBox justify="flex-end" margin="16px 0 0 0">
+          <Button type="submit">Create</Button>
+        </FlexBox>
+      </Form>
+    </StyledContainer>
   );
 }

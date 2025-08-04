@@ -1,29 +1,27 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { fetchAllPosts } from "@/app/store/postsSlice";
-import { RootState, AppDispatch } from "@/app/store/store";
-import { TextField, Box } from "@mui/material";
 import PostItem from "../PostItem/PostItem";
 
-export default function PostList() {
-  // redux
-  const dispatch = useDispatch<AppDispatch>();
-  const { posts, loading, error } = useSelector(
-    (state: RootState) => state.posts
-  );
+// UI components
+import FlexBox from "../UI/FlexBox";
+import FormField from "../UI/FormField";
 
-  // hooks
+// Redux
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+
+export default function PostList() {
+  const dispatch = useAppDispatch();
+  const { posts, loading, error } = useAppSelector((state) => state.posts);
+
   const [showPosts, setShowPosts] = useState(posts);
   const [query, setQuery] = useState("");
 
-  // get all posts
   useEffect(() => {
     dispatch(fetchAllPosts());
   }, [dispatch]);
 
-  // filter posts
   useEffect(() => {
     const filtered = posts.filter((post) =>
       post.title.toLowerCase().includes(query.toLowerCase())
@@ -34,15 +32,13 @@ export default function PostList() {
   return (
     <section>
       <header>
-        <Box mb={2}>
-          <TextField
+        <FlexBox>
+          <FormField
             label="Search by title"
-            variant="outlined"
-            fullWidth
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-        </Box>
+        </FlexBox>
       </header>
 
       {loading && <p>Loading posts...</p>}

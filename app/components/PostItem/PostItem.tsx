@@ -1,8 +1,10 @@
 "use client";
 
-import React from "react";
-import { Box, Typography } from "@mui/material";
-import Link from "next/link";
+// UI components
+import Title from "@/app/components/UI/Title";
+import CardLink from "@/app/components/UI/CardLink";
+import TextSecondary from "@/app/components/UI/TextSecondary";
+import TextMeta from "@/app/components/UI/TextMeta";
 
 interface PostItemProps {
   id: string;
@@ -18,32 +20,14 @@ export default function PostItem({
   createdAt,
 }: PostItemProps) {
   return (
-    <Box
-      component={Link}
-      href={`pages/post/${id}`}
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        border: "1px solid #bcbcbcff",
-        borderRadius: 2,
-        p: 2,
-        mb: 2,
-        color: "inherit",
-        transition: "0.2s",
-        "&:hover": {
-          backgroundColor: "#f5f5f5",
-        },
-      }}
-    >
+    <CardLink href={`/pages/post/${id}`}>
       <div>
-        <Typography variant="h6">{title}</Typography>
-        <Typography variant="body1" color="#8d8d8dff" mt={1}>
-          {description}
-        </Typography>
+        <Title as="h6" fontSize="1.5rem">
+          {title}
+        </Title>
+        <TextSecondary>{description}</TextSecondary>
       </div>
-      <Typography variant="body2" color="text.secondary">
-        {new Date(createdAt).toLocaleDateString()}
-      </Typography>
-    </Box>
+      <TextMeta>{new Date(createdAt).toLocaleDateString()}</TextMeta>
+    </CardLink>
   );
 }

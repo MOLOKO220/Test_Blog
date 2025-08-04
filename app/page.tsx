@@ -1,43 +1,28 @@
 "use client";
 
 import React from "react";
-import { Container, Box, Typography, Button } from "@mui/material";
 import Link from "next/link";
 import PostList from "./components/PostList/PostList";
+
+import StyledContainer from "@/app/components/UI/StyledContainer";
+
+// UI Components
+import FlexBox from "./components/UI/FlexBox";
+import Title from "./components/UI/Title";
+import Button from "./components/UI/Button";
 
 export default function HomePage() {
   return (
     <main>
-      <Container
-        maxWidth="md"
-        sx={{
-          border: "1px solid #888686",
-          borderRadius: 2,
-          my: 4,
-          p: 2,
-        }}
-      >
-        <Box
-          component="header"
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          py={1}
-        >
-          <Typography variant="h4" component="h1">
-            Blog Posts
-          </Typography>
-          <Button
-            variant="contained"
-            component={Link}
-            href="/pages/create-post"
-          >
+      <StyledContainer>
+        <FlexBox as="header" justify="space-between" align="center">
+          <Title>Blog Posts</Title>
+          <Button as={Link} href="/pages/create-post">
             + Create Post
           </Button>
-        </Box>
-
+        </FlexBox>
         <PostList />
-      </Container>
+      </StyledContainer>
     </main>
   );
 }

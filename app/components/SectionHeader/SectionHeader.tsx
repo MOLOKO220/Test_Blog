@@ -1,8 +1,12 @@
 "use client";
 
 import React, { ReactNode, isValidElement } from "react";
-import { Box, Typography, Button } from "@mui/material";
 import Link from "next/link";
+
+// UI components
+import FlexBox from "../UI/FlexBox";
+import Button from "../UI/Button";
+import Title from "../UI/Title";
 
 type SectionHeaderProps = {
   title: string | ReactNode;
@@ -10,25 +14,22 @@ type SectionHeaderProps = {
 
 export default function SectionHeader({ title }: SectionHeaderProps) {
   return (
-    <Box
-      component="header"
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      borderBottom="1px solid #ccc"
-      py={1}
-    >
+    <FlexBox justify="space-between">
       {typeof title === "string" ? (
-        <Typography variant="h4" component="h1">
-          {title}
-        </Typography>
+        <Title>{title}</Title>
       ) : (
         isValidElement(title) && title
       )}
 
-      <Button variant="outlined" component={Link} href="/">
+      <Button
+        as={Link}
+        href="/"
+        $bg="#c7c7c7ff"
+        $color="#1976d2"
+        $border="solid 1px #1976d2"
+      >
         ← Back to Main
       </Button>
-    </Box>
+    </FlexBox>
   );
 }
