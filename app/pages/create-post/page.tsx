@@ -10,7 +10,7 @@ import { usePostFormValidation } from "@/app/hooks/usePostFormValidation/usePost
 import SectionHeader from "@/app/components/SectionHeader/SectionHeader";
 
 // UI components
-import Button from "@/app/components/UI/Button";
+import Button from "@/app/components/UI/Button/Button";
 import FormField from "@/app/components/UI/FormField";
 import Form from "@/app/components/UI/Form";
 import StyledContainer from "@/app/components/UI/StyledContainer";

@@ -5,7 +5,7 @@ import Link from "next/link";
 
 // UI components
 import FlexBox from "../UI/FlexBox";
-import Button from "../UI/Button";
+import Button from "../UI/Button/Button";
 import Title from "../UI/Title";
 
 type SectionHeaderProps = {
@@ -20,14 +20,7 @@ export default function SectionHeader({ title }: SectionHeaderProps) {
       ) : (
         isValidElement(title) && title
       )}
-
-      <Button
-        as={Link}
-        href="/"
-        $bg="#c7c7c7ff"
-        $color="#1976d2"
-        $border="solid 1px #1976d2"
-      >
+      <Button as={Link} href="/" variant="outlined">
         ← Back to Main
       </Button>
     </FlexBox>

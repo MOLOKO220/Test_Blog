@@ -14,7 +14,7 @@ const CardLink = styled(Link)`
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: ${({ theme }) => theme.colors.lightGray};
   }
 `;
 

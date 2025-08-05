@@ -1,31 +1,83 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+  * {
+    padding: 0;
+    margin: 0;
+    border: 0;
+  }
 
   *, *::before, *::after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
   }
 
-  body {
-    margin: 0;
+  :focus,
+  :active,
+  a:focus,
+  a:active {
+    outline: none;
+  }
+
+  nav,
+  footer,
+  header,
+  aside {
+    display: block;
+  }
+
+  html, body {
+    height: 100%;
+    width: 100%;
+    font-size: 14px;
+    line-height: 1;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
     font-family: 'Roboto', sans-serif;
-    background-color: #c7c7c7ff;
-    color: #212121;
+    background-color: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.text};
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  a {
-    color: inherit;
-    text-decoration: none;
+  input,
+  button,
+  textarea {
+    font-family: inherit;
   }
 
-  ul {
-    list-style: none;
-    padding: 0;
+  input::-ms-clear {
+    display: none;
   }
 
   button {
-    font-family: inherit;
+    cursor: pointer;
+  }
+
+  button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+
+  a,
+  a:visited,
+  a:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  ul, li {
+    list-style: none;
+  }
+
+  img {
+    vertical-align: top;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-size: inherit;
+    font-weight: 400;
   }
 `;
 

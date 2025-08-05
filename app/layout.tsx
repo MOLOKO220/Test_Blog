@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import "./globals.css";
-
 import AppProvider from "./AppProvider";
+import HeadTags from "./HeadTags";
+import StyledComponentsRegistry from "./lib/registry";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -10,13 +10,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body>
-        <AppProvider>{children}</AppProvider>
+        <HeadTags />
+        <StyledComponentsRegistry>
+          <AppProvider>{children}</AppProvider>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

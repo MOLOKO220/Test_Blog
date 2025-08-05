@@ -8,7 +8,7 @@ import CommentItem from "../CommentsItem/CommentsItem";
 import FlexBox from "../UI/FlexBox";
 import Title from "../UI/Title";
 import FormField from "../UI/FormField";
-import Button from "../UI/Button";
+import Button from "../UI/Button/Button";
 
 export default function CommentsWrapper({ postId }: { postId: string }) {
   const [text, setText] = useState("");
@@ -53,7 +53,6 @@ export default function CommentsWrapper({ postId }: { postId: string }) {
           }}
           error={error ? { message: error, type: "manual" } : undefined}
         />
-
         <Button onClick={handleAddComment} $height="53px">
           Send
         </Button>

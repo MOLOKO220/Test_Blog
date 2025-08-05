@@ -6,6 +6,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
 import { deleteComment } from "@/app/lib/commentsApi";
 
+import { useTheme } from "styled-components";
+
 // UI components
 import FlexBox from "../UI/FlexBox";
 import StyledContainer from "../UI/StyledContainer";
@@ -26,6 +28,8 @@ export default function CommentItem({
   createdAt,
   onDeleted,
 }: CommentItemProps) {
+  const theme = useTheme();
+
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
@@ -51,11 +55,9 @@ export default function CommentItem({
       }}
     >
       <FlexBox direction="column" gap="4px" style={{ marginBottom: "0" }}>
-        <TextSecondary color="black" style={{ marginBottom: "0" }}>
-          {text}
-        </TextSecondary>
+        <TextSecondary>{text}</TextSecondary>
         {createdAt && (
-          <TextSecondary fontStyle="italic" style={{ fontSize: "0.8rem" }}>
+          <TextSecondary fontStyle="italic">
             {new Date(createdAt.seconds * 1000).toLocaleString("uk-UA", {
               day: "2-digit",
               month: "2-digit",
@@ -74,7 +76,11 @@ export default function CommentItem({
         onClick={handleDelete}
         disabled={isDeleting}
       >
-        {isDeleting ? <CircularProgress size={20} /> : <DeleteIcon />}
+        {isDeleting ? (
+          <CircularProgress size={20} sx={{ color: theme.colors.text }} />
+        ) : (
+          <DeleteIcon sx={{ color: theme.colors.text }} />
+        )}
       </IconButton>
     </StyledContainer>
   );

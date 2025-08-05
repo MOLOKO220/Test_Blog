@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getPostById, updatePost, deletePost } from "@/app/lib/postApi";
 import { useParams, useRouter } from "next/navigation";
+import { getPostById, updatePost, deletePost } from "@/app/lib/postApi";
 
 import { Post } from "@/app/types/post";
 import { usePostFormValidation } from "@/app/hooks/usePostFormValidation/usePostFormValidation";
@@ -16,7 +16,7 @@ import TextSecondary from "@/app/components/UI/TextSecondary";
 import StyledContainer from "@/app/components/UI/StyledContainer";
 import Title from "@/app/components/UI/Title";
 import FormField from "@/app/components/UI/FormField";
-import Button1 from "@/app/components/UI/Button";
+import Button from "@/app/components/UI/Button/Button";
 import TextMeta from "@/app/components/UI/TextMeta";
 
 export default function PostPage() {
@@ -91,7 +91,7 @@ export default function PostPage() {
         direction="column"
         height="100vh"
       >
-        <TextSecondary color="black">
+        <TextSecondary>
           Post not found <br />
           The post you are looking for does not exist.
         </TextSecondary>
@@ -122,37 +122,29 @@ export default function PostPage() {
             error={errors.content}
           />
 
-          <FlexBox justify="flex-end" margin="16px 0 0 0">
-            <Button1 onClick={handleCancel} $bg="#c7c7c7ff" $color="#1976d2">
+          <FlexBox justify="flex-end" margin="16px 0 0 0" gap="16px">
+            <Button onClick={handleCancel} variant="outlined">
               Cancel
-            </Button1>
-            <Button1 onClick={handleSubmit(onSubmit)}>Save</Button1>
+            </Button>
+            <Button onClick={handleSubmit(onSubmit)} variant="primary">
+              Save
+            </Button>
           </FlexBox>
         </>
       ) : (
         <>
-          <FlexBox justify="flex-end" gap="8px">
-            <Button1
-              onClick={() => setIsEditing(true)}
-              $bg="#adb1b4ff"
-              $color="#1976d2"
-            >
+          <FlexBox justify="flex-end" gap="18px">
+            <Button variant="edit" onClick={() => setIsEditing(true)}>
               Edit
-            </Button1>
-            <Button1
-              $color="#d62c2cff"
-              $border="1px solid #d62c2cff"
-              $bg="#c7c7c7ff"
-              onClick={handleDelete}
-            >
+            </Button>
+
+            <Button variant="delete" onClick={handleDelete}>
               Delete
-            </Button1>
+            </Button>
           </FlexBox>
 
-          <TextSecondary color="#666666ff" fontStyle="italic">
-            {post.description}
-          </TextSecondary>
-          <TextSecondary color="#3c3c3cff">{post.content}</TextSecondary>
+          <TextSecondary fontStyle="italic">{post.description}</TextSecondary>
+          <TextSecondary>{post.content}</TextSecondary>
         </>
       )}
 

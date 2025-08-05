@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
-type ButtonProps = {
+export type ButtonStyleProps = {
   $bg?: string;
   $color?: string;
   $border?: string;
+  $hoverBg?: string;
   $shadow?: string;
   $height?: string;
 };
@@ -21,9 +22,9 @@ function darkenColor(color: string) {
   }
 }
 
-const Button = styled.button<ButtonProps>`
+const ButtonBase = styled.button<ButtonStyleProps>`
   background-color: ${({ $bg }) => $bg || "#1976d2"};
-  color: ${({ $color }) => $color || "white"};
+  color: ${({ $color }) => $color || "white"} !important;
   border: ${({ $border }) => $border || "none"};
   border-radius: 4px;
   font-size: 0.875rem;
@@ -42,7 +43,8 @@ const Button = styled.button<ButtonProps>`
   padding: 0 16px;
 
   &:hover {
-    background-color: ${({ $bg }) => ($bg ? darkenColor($bg) : "#1565c0")};
+    background-color: ${({ $hoverBg, $bg }) =>
+      $hoverBg || ($bg ? darkenColor($bg) : "#1565c0")};
   }
 
   &:disabled {
@@ -51,4 +53,4 @@ const Button = styled.button<ButtonProps>`
   }
 `;
 
-export default Button;
+export default ButtonBase;

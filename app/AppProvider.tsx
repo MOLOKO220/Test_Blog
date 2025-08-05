@@ -1,11 +1,32 @@
 "use client";
-// redux
-import { Provider } from "react-redux";
+
+import { Provider, useSelector } from "react-redux";
 import { store } from "@/app/store/store";
-// style
 import { ThemeProvider } from "styled-components";
-import { theme } from "@/app/styles/theme";
 import GlobalStyle from "@/app/styles/GlobalStyle";
+import { themes } from "@/app/styles/theme";
+import ThemeSwitcher from "./components/ThemeSwitcher/ThemeSwitcher";
+import { RootState } from "@/app/store/store";
+
+function ThemeWrapper({ children }: { children: React.ReactNode }) {
+  const currentTheme = useSelector((state: RootState) => state.themes.theme);
+
+  return (
+    <ThemeProvider theme={themes[currentTheme]}>
+      <div
+        style={{
+          maxWidth: "960px",
+          margin: "auto",
+          position: "relative",
+        }}
+      >
+        <ThemeSwitcher />
+        <GlobalStyle />
+        {children}
+      </div>
+    </ThemeProvider>
+  );
+}
 
 export default function AppProvider({
   children,
@@ -14,10 +35,7 @@ export default function AppProvider({
 }) {
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        {children}
-      </ThemeProvider>
+      <ThemeWrapper>{children}</ThemeWrapper>
     </Provider>
   );
 }

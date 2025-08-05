@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
+
 import PostList from "./components/PostList/PostList";
 
 import StyledContainer from "@/app/components/UI/StyledContainer";
@@ -9,7 +9,7 @@ import StyledContainer from "@/app/components/UI/StyledContainer";
 // UI Components
 import FlexBox from "./components/UI/FlexBox";
 import Title from "./components/UI/Title";
-import Button from "./components/UI/Button";
+import Button from "./components/UI/Button/Button";
 
 export default function HomePage() {
   return (
